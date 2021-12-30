@@ -1,8 +1,10 @@
+use std::{collections::btree_map::Keys, ops::Deref};
+
 
 #[derive(Debug)]
 pub struct Node<'a> {
     pub order: i32,
-    pub keys: Option<&'a mut Vec<i32>>,
+    pub keys: Option<&'a mut Vec<&'a i32>>,
     pub stored_values: Option<&'a mut Vec<&'a str>>,
     pub left: Option<&'a mut Self>,
     pub right: Option<&'a mut Self>,
@@ -23,21 +25,24 @@ impl<'a> Node<'a> {
         }
     }
 
-    pub fn insert(&mut self, value: String) {
-        
-    }
+    pub fn insert(&mut self, key: &'a i32, value: &'a str) {
+        if let Some(keys) = self.keys.take() {
+            for (idx, item) in keys.iter().enumerate() {
+                if *key == **item {
+                    if let Some(values) = self.stored_values.take() {
+                        values.push(value);
+                        self.stored_values= Some(values);
+                    }
+                }
+                if *key < **item {
+                }
+                if idx + 1 == keys.len() {
 
-    pub fn delete(&mut self, key: &i32) {
-
-    }
-
-    pub fn split(&mut self) {
-
-    }
-
-    pub fn index(&mut self, key: &i32) {
-        for key in self.keys.as_ref().unwrap().iter() {
-            println!("{}", &key);
+                }
+            }
+            self.keys = Some(keys);
+        } else {
+            todo!()
         }
     }
 }
@@ -49,6 +54,4 @@ mod tests {
         let mut node = &mut Node::new(32);
         assert_eq!(node.order, 32);
     }
-
-    fn test_new_with_data_Node() {}
 }
