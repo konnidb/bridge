@@ -3,7 +3,7 @@
 pub struct Node<'a> {
     pub order: i32,
     pub keys: Option<&'a mut Vec<i32>>,
-    pub stored_values: Option<&'a mut Vec<String>>,
+    pub stored_values: Option<&'a mut Vec<&'a str>>,
     pub left: Option<&'a mut Self>,
     pub right: Option<&'a mut Self>,
     pub is_leaf: bool,
@@ -24,7 +24,7 @@ impl<'a> Node<'a> {
     }
 
     pub fn insert(&mut self, value: String) {
-
+        
     }
 
     pub fn delete(&mut self, key: &i32) {
@@ -32,7 +32,13 @@ impl<'a> Node<'a> {
     }
 
     pub fn split(&mut self) {
-        
+
+    }
+
+    pub fn index(&mut self, key: &i32) {
+        for key in self.keys.as_ref().unwrap().iter() {
+            println!("{}", &key);
+        }
     }
 }
 #[cfg(test)]

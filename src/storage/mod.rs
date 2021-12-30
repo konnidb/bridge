@@ -1,4 +1,4 @@
-pub mod btree;
+pub mod bptree;
 use std::{fs::File, string, collections::HashMap, io::Read, fmt::Error};
 
 pub struct Index {
