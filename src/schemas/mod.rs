@@ -4,30 +4,24 @@ use std::{collections::HashMap, error::Error};
 pub struct Schema<'a> {
     schema_name: String,
     properties: HashMap<&'a String, &'a ValueMetaData<'a>>,
+    index_properties: HashMap<&'a String, &'a ValueMetaData<'a>>
 }
 
 impl<'a> Schema<'a> {
     pub fn new(
         schema_name: String,
         properties: HashMap<&'a String, &'a ValueMetaData<'a>>,
+        index_properties: HashMap<&'a String, &'a ValueMetaData<'a>>,
     ) -> Self {
         Self {
             schema_name,
             properties,
+            index_properties
         }
-    }
-
-    pub fn add_property(&mut self, prop_name: &'a String, meta_data: &'a ValueMetaData<'a>) {
-        self.properties.insert(prop_name, meta_data);
     }
 
     fn can_remove_property(&self, prop_name: &'a String) -> bool {
-        let prop_meta_data = self.properties.get(prop_name).unwrap();
-        if prop_meta_data.is_index {
-            false
-        } else {
-            true
-        }
+        self.index_properties.contains_key(prop_name)
     }
 
     pub fn remove_property(&mut self, prop_name: &'a String) -> Result<bool, &'static str> {
@@ -36,6 +30,33 @@ impl<'a> Schema<'a> {
         }
         self.properties.remove(prop_name);
         Ok(true)
+    }
+
+    pub fn add_property(&mut self, prop_name: &'a String, meta_data: &'a ValueMetaData<'a>) -> Result<bool, String> {
+        if self.properties.contains_key(prop_name) {
+            return Err(std::fmt::format(format_args!("Already existing {} property exists", &prop_name)));
+        }
+        if meta_data.is_index {
+            self.index_properties.insert(prop_name, meta_data);
+        }
+        self.properties.insert(prop_name, meta_data);
+        Ok(true)
+    }
+
+    pub fn alter_property(&mut self, prop_name: &'a String, meta_data: &'a ValueMetaData<'a>) -> Result<bool, String> {
+        let mut remove_idx = false;
+        if self.index_properties.contains_key(prop_name) {
+            if meta_data.is_index && meta_data.allow_null {
+                return Err("Cannot accept null on index properties".to_string());
+            }
+            if !meta_data.is_index {
+                remove_idx = true;
+            }
+        }
+
+        let prop = self.properties[prop_name];
+
+        return Ok(true);
     }
 }
 
