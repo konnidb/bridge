@@ -1,4 +1,4 @@
-use std::{collections::HashMap};
+use std::{collections::HashMap, error::Error};
 
 #[derive(Debug)]
 pub struct Schema<'a> {
@@ -22,11 +22,20 @@ impl<'a> Schema<'a> {
     }
 
     fn can_remove_property(&self, prop_name: &'a String) -> bool {
-        let prop_meta_data = self.properties.get(prop_name);
-        if let Some(x) = prop_meta_data {
-            
+        let prop_meta_data = self.properties.get(prop_name).unwrap();
+        if prop_meta_data.is_index {
+            false
+        } else {
+            true
         }
-        false
+    }
+
+    pub fn remove_property(&mut self, prop_name: &'a String) -> Result<bool, &'static str> {
+        if !self.can_remove_property(prop_name) {
+            return Err("Could not remove property");
+        }
+        self.properties.remove(prop_name);
+        Ok(true)
     }
 }
 
