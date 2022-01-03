@@ -1,5 +1,5 @@
 pub mod bptree;
-use std::{fs::File, string, collections::HashMap, io::Read, fmt::Error};
+use std::{fs::File, collections::HashMap, io::Read};
 
 pub struct Index {
     id: u128,
