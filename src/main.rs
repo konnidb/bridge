@@ -2,6 +2,7 @@ use std::{option, ops::Deref};
 
 mod storage;
 mod schemas;
+mod graph_engine;
 fn main() {
     println!("Hello, world!");
     let option_vector = Some(vec!["asd", "b"]);
