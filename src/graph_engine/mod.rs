@@ -2,6 +2,8 @@ use std::collections::HashMap;
 
 use crate::schemas::Schema;
 
+// TODO Rethink lifecycles in this section
+
 pub struct Graph<'a> {
     is_directed: bool,
     nodes: Vec<Node<'a>>,
