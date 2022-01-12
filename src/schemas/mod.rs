@@ -11,7 +11,7 @@ pub use schema_str::*;
 
 pub fn is_numeric(val_type: &ValueType) -> bool {
     match val_type {
-        ValueType::INT |ValueType::LONG |ValueType::FLOAT |ValueType::BOOLEAN => {
+        ValueType::INT | ValueType::LONG | ValueType::FLOAT | ValueType::BOOLEAN => {
             true
         },
         ValueType::TEXT => false

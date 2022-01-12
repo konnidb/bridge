@@ -1,9 +1,9 @@
-mod comparisons;
+pub mod comparisons;
 use std::{collections::HashMap, str::Bytes, vec};
 
 use crate::schemas::Schema;
 
-pub use comparisons::*;
+use comparisons::*;
 
 // TODO Rethink lifecycles in this section
 
@@ -25,7 +25,9 @@ impl Default for Graph<'static> {
 }
 
 impl<'a> Graph<'a> {
-    
+    pub fn match_sentence(&mut self) {
+        
+    }
 }
 
 #[derive(Debug)]

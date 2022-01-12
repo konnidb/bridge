@@ -3,6 +3,8 @@ use std::{option, ops::Deref};
 mod storage;
 mod schemas;
 mod graph_engine;
+mod query_lang;
+
 fn main() {
     println!("Hello, world!");
     let option_vector = Some(vec!["asd", "b"]);
